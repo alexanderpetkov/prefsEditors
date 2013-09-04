@@ -70,18 +70,17 @@ textarea:focus, input:focus{
 }
 
 .more-options {
-    cursor:pointer;
     display: none;
-    font-size: 15px;
+}
+
+.more-options-label {
+    cursor: pointer;
+    font-size: 17px !important;
     font-weight: bold;
     margin-left: 100px;
 }
 
-#expanded-top {
-    display: none;
-}
-
-#expanded-bottom {
+.fully-expanded {
     display: none;
 }
 
@@ -194,8 +193,8 @@ input[type=checkbox] {
     position: absolute;
     overflow: hidden;
     clip: rect(0 0 0 0);
-    height:1px;
-    width:1px;
+    height:0px;
+    width:0px;
     margin:-1px;
     padding:0;
     border:0;

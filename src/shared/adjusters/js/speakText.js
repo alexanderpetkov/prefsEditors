@@ -8,10 +8,6 @@
             },
             "screenReaderTTSEnabled": {
                 "type": "boolean",
-                "default": false
-            },
-            "screenReaderSwitch": {
-                "type": "boolean",
                 "default": true
             },
             "speechRate": {
@@ -61,16 +57,6 @@
             "messagePrefix": "",
             "template": "./speakTextFrame.html", //main template for all three groups (speakText, incSize, highContrast)
 
-            "screenReaderTTSEnabled": {
-                "type": "screenReaderTTSEnabled",
-                "panel": {
-                    "type": "speakText.panel",
-                    "container": ".gpii-speak-text-group", // container for the speakText panel, holding all speakText adjusters
-                    "template": "../../src/shared/adjusters/html/newestSpeakText.html", // same as above
-                    "message": "../../src/shared/adjusters/messages/speakText.json"
-                }
-            },
-
             "addOrRemovePreference": {
                 "type": "addOrRemovePreference",
                 "panel": {
@@ -78,10 +64,13 @@
                 }
             },
 
-            "screenReaderSwitch": {
-                "type": "screenReaderSwitch",
+            "screenReaderTTSEnabled": {
+                "type": "screenReaderTTSEnabled",
                 "panel": {
-                    "type": "speakText.panel"
+                    "type": "speakText.panel",
+                    "container": ".gpii-speak-text-group", // container for the speakText panel, holding all speakText adjusters
+                    "template": "../../src/shared/adjusters/html/newestSpeakText.html", // same as above
+                    "message": "../../src/shared/adjusters/messages/speakText.json"
                 }
             },
 
@@ -152,15 +141,16 @@
 
     fluid.defaults("speakText.panel", {
         gradeNames: ["fluid.uiOptions.panels", "autoInit"],
+        model: {
+            speakTextPresetButton: false,
+            moreOptions: false
+        },
         preferenceMap: {
             "addOrRemovePreference": {
                 "model.addOrRemovePreference": "default"
             },
             "screenReaderTTSEnabled": {
                 "model.screenReaderTTSEnabled": "default"
-            },
-            "screenReaderSwitch": {
-                "model.screenReaderSwitch": "default"
             },
             "speechRate": {
                 "model.speechRate": "default",
@@ -194,8 +184,8 @@
 
         selectors: {
             addOrRemovePreference: ".gpii-addOrRemovePreference",
+            speakTextPresetButton: ".gpii-speakTextPresetButton",
             screenReaderTTSEnabled: ".gpii-screenReaderTTSEnabled",
-            screenReaderSwitch: ".gpii-screenReaderSwitch",
             speechRate: ".gpii-speechRate",
             auditoryOutLanguage: ".gpii-auditoryOutLanguage",
 
@@ -210,8 +200,8 @@
             screenReaderBrailleOutput: ".gpii-screenReaderBrailleOutput",
 
             addOrRemovePreferenceLabel: ".gpii-addOrRemovePreference-label",
+            speakTextPresetButtonLabel: ".gpii-speakTextPresetButton-label",
             screenReaderTTSEnabledLabel: ".gpii-screenReaderTTSEnabled-label",
-            screenReaderSwitchLabel: ".gpii-screenReaderSwitch-label",
             speechRateLabel: ".gpii-speechRate-label",
             speechRateMinus: ".gpii-speechRate-minus",
             speechRatePlus: ".gpii-speechRate-plus",
@@ -225,7 +215,8 @@
 
             screenReaderBrailleOutputDescription: ".gpii-screenReaderBrailleOutput-description",
 
-            // moreOptions: ".more-options"
+            moreOptions: ".more-options-checkbox",
+            moreOptionsLabel: ".more-options-label"
         },
 
         repeatingSelectors: ["punctuationVerbosityRow"],
@@ -245,8 +236,8 @@
             },
 
             addOrRemovePreference: "${addOrRemovePreference}",
+            speakTextPresetButton: "${speakTextPresetButton}",
             screenReaderTTSEnabled: "${screenReaderTTSEnabled}",
-            screenReaderSwitch: "${screenReaderSwitch}",
             speechRate: {
                 decorators: {
                     type: "fluid",
@@ -273,10 +264,11 @@
             keyEcho: "${keyEcho}",
             wordEcho: "${wordEcho}",
             screenReaderBrailleOutput: "${screenReaderBrailleOutput}",
+            moreOptions: "${moreOptions}",
 
             addOrRemovePreferenceLabel: {messagekey: "addOrRemovePreferenceLabelOff"},
+            speakTextPresetButtonLabel: {messagekey: "speakTextPresetButtonLabel"},
             screenReaderTTSEnabledLabel: {messagekey: "screenReaderTTSEnabledLabel"},
-            screenReaderSwitchLabel: {messagekey: "screenReaderSwitchLabel"},
             speechRateLabel: {messagekey: "speechRateLabel"},
             speechRateMinus: {messagekey: "speechRateMinus"},
             speechRatePlus: {messagekey: "speechRatePlus"},
@@ -287,6 +279,7 @@
             keyEchoLabel: {messagekey: "keyEchoLabel"},
             wordEchoLabel: {messagekey: "wordEchoLabel"},
             screenReaderBrailleOutputLabel: {messagekey: "screenReaderBrailleOutputLabel"},
+            moreOptionsLabel: {messagekey: "moreOptionsLabel"},
 
             screenReaderBrailleOutputDescription: {messagekey: "screenReaderBrailleOutputDescription"},
             punctuationVerbosityDescription: {messagekey: "punctuationVerbosityDescription"}
@@ -326,57 +319,52 @@
         }
     });
 
-    var flag = true;
-
     speakText.finalInit = function (that) {
-        that.applier.modelChanged.addListener("screenReaderTTSEnabled", function () {
-            if (that.model.screenReaderTTSEnabled) {
-                $(".more-options").text("+ more");
+        something = that;
+        that.applier.modelChanged.addListener("speakTextPresetButton", function () {
+            if (that.model.speakTextPresetButton) {
+                that.locate("moreOptionsLabel").text("+ more");
                 $("#speech-rate").slideDown();
                 $(".more-options").slideDown();
 
-                if (flag) {
-                    $(".more-options").click(function () {
-                        $("#expanded-top").toggle(400);
-                        $("#expanded-bottom").toggle(400);
-                        $(".gpii-addOrRemovePreference-label").toggle();
-                        $(this).text(moreOrLessOptions($(this).text()));
-                    });
-
-                    $(".gpii-addOrRemovePreference-label").hover(function () {
-                        $("#prompt-message").show();
-                    }, function () {
-                        $("#prompt-message").hide();
-                    });
-
-                    flag = false;
-                };
             } else {
                 $("#speech-rate").slideUp();
                 $(".more-options").slideUp();
-                $("#expanded-top").slideUp();
-                $("#expanded-bottom").slideUp();
-                $(".gpii-addOrRemovePreference-label").hide();
+                $(".fully-expanded").slideUp();
+                that.locate("addOrRemovePreferenceLabel").hide();
+                that.locate("moreOptions").attr('checked', false);
             }
         });
 
         that.applier.modelChanged.addListener("addOrRemovePreference", function () {
             if (that.model.addOrRemovePreference) {
                 $.getJSON('../../src/shared/adjusters/messages/speakText.json', function (data) {
-                $(".gpii-addOrRemovePreference-label").text(data["addOrRemovePreferenceLabelOn"]);
+                that.locate("addOrRemovePreferenceLabel").text(data["addOrRemovePreferenceLabelOn"]);
             });
             } else {
-                 $.getJSON('../../src/shared/adjusters/messages/speakText.json', function (data) {
-                 $(".gpii-addOrRemovePreference-label").text(data["addOrRemovePreferenceLabelOff"])
+                $.getJSON('../../src/shared/adjusters/messages/speakText.json', function (data) {
+                that.locate("addOrRemovePreferenceLabel").text(data["addOrRemovePreferenceLabelOff"])
             });
             }
         });
-    };
 
-    // lookupMsg = function (messageResolver, value) {
-    //     var looked = messageResolver.lookup([value]);
-    //     return looked ? looked.template : looked;
-    // };
+        that.applier.modelChanged.addListener("moreOptions", function () {
+            if (that.model.moreOptions) {
+                $(".fully-expanded").slideDown();
+                that.locate("addOrRemovePreferenceLabel").show();
+                that.locate("moreOptionsLabel").text("- less");
+                that.locate("addOrRemovePreferenceLabel").hover(function () {
+                        $("#prompt-message").show();
+                    }, function () {
+                        $("#prompt-message").hide();
+                    });
+            } else {
+                $(".fully-expanded").slideUp();
+                that.locate("addOrRemovePreferenceLabel").hide();
+                that.locate("moreOptionsLabel").text("+ more");
+            }
+        })
+    };
 
     function moreOrLessOptions(currentValue) {
         return currentValue == "+ more" ? "- less" : "+ more"
