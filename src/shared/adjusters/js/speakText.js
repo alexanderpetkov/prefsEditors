@@ -285,21 +285,19 @@
             punctuationVerbosityDescription: {messagekey: "punctuationVerbosityDescription"}
         },
 
-        // strings: {
-        //     moreText: {
-        //         expander: {
-        //             func: "lookupMsg",
-        //             args: ["{that}.msgBundle", "moreOptionsMoreText"]
-        //         }
-        //     },
+        strings: {
+            moreText: {
+                expander: {
+                    func: "speakText.showMoreText"
+                }
+            },
 
-        //     lessText: {
-        //         expander: {
-        //             func: "lookupMsg",
-        //             args: ["{that}.msgBundle", "moreOptionsLessText"]
-        //         }
-        //     }
-        // },
+            lessText: {
+                expander: {
+                    func: "speakText.showLessText"
+                }
+            }
+        },
 
         finalInitFunction: "speakText.finalInit",
 
@@ -318,6 +316,14 @@
             }
         }
     });
+
+    speakText.showMoreText = function () {
+        return "- less";
+    }
+
+    speakText.showLessText = function () {
+        return "+ more";
+    }
 
     speakText.finalInit = function (that) {
         something = that;
@@ -352,7 +358,7 @@
             if (that.model.moreOptions) {
                 $(".fully-expanded").slideDown();
                 that.locate("addOrRemovePreferenceLabel").show();
-                that.locate("moreOptionsLabel").text("- less");
+                that.locate("moreOptionsLabel").text(that.options.strings.moreText);
                 that.locate("addOrRemovePreferenceLabel").hover(function () {
                         $("#prompt-message").show();
                     }, function () {
@@ -361,13 +367,9 @@
             } else {
                 $(".fully-expanded").slideUp();
                 that.locate("addOrRemovePreferenceLabel").hide();
-                that.locate("moreOptionsLabel").text("+ more");
+                that.locate("moreOptionsLabel").text(that.options.strings.lessText);
             }
         })
-    };
-
-    function moreOrLessOptions(currentValue) {
-        return currentValue == "+ more" ? "- less" : "+ more"
     };
 
     speakText.panel.punctuationVerbosityStyle = function (labels, values, classes) {
