@@ -329,7 +329,7 @@
         something = that;
         that.applier.modelChanged.addListener("speakTextPresetButton", function () {
             if (that.model.speakTextPresetButton) {
-                that.locate("moreOptionsLabel").text("+ more");
+                that.locate("moreOptionsLabel").text(that.options.strings.lessText);
                 $("#speech-rate").slideDown();
                 $(".more-options").slideDown();
 
