@@ -181,18 +181,11 @@
                         args: ["{uiOptionsLoader}.msgBundle", "less"]
                     }
                 }
-            },
-            finalInitFunction: "bububu"
+            }
         }
     });
 
-    bububu = function (that) {
-        hook = that;
-        // alert("hiihhi");
-    }
-
     fluid.uiOptions.pmt.toggleIncreaseSizeExtraAdjusters = function (elm, showEvent, hideEvent) {
-        alert("vleze se v toggleIncreaseSizeExtraAdjusters");
         if (elm.is(":visible")) {
             hideEvent();
         } else {
