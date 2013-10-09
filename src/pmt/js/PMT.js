@@ -55,7 +55,7 @@
                     "method": "attr",
                     "args": ["value", "{that}.options.strings.resetButtonText"]
                },
-               "onReady.setATTRcancelButton": {
+               "onReady.setATTRcancelButton": {             
                     "this": "{that}.dom.cancelButton",
                     "method": "attr",
                     "args": ["value", "{that}.options.strings.cancelButtonText"]
@@ -181,11 +181,18 @@
                         args: ["{uiOptionsLoader}.msgBundle", "less"]
                     }
                 }
-            }
+            },
+            finalInitFunction: "bububu"
         }
     });
 
+    bububu = function (that) {
+        hook = that;
+        // alert("hiihhi");
+    }
+
     fluid.uiOptions.pmt.toggleIncreaseSizeExtraAdjusters = function (elm, showEvent, hideEvent) {
+        alert("vleze se v toggleIncreaseSizeExtraAdjusters");
         if (elm.is(":visible")) {
             hideEvent();
         } else {

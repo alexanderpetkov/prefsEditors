@@ -43,9 +43,9 @@
     fluid.uiOptions.pmt.auxiliarySchema = {
             // The global values:
             "namespace": "fluid.uiOptions.constructed",
-            "templatePrefix": "../../src/shared/adjusters/html/", // The common path to settings panel templates
+            "templatePrefix": "../../src/shared/adjusters/IncreaseSize-HighContrast/html/", // The common path to settings panel templates
             "template": "../../src/pmt/html/PMTUIOptions.html",
-            "messagePrefix": "../../src/shared/adjusters/messages/en/",
+            "messagePrefix": "../../src/shared/adjusters/IncreaseSize-HighContrast/messages/en/",
             "message": "%prefix/pmt.json",
 
             // The preference-specific information:
