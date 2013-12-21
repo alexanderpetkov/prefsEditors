@@ -13,6 +13,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
 (function ($, fluid) {
     fluid.defaults("gpii.prefsEditor", {
         gradeNames: ["fluid.prefs.fullNoPreview", "autoInit"],
+        loggedInFlag: false,
         prefsEditor: {
             gradeNames: ["fluid.prefs.stringBundle"],
             members: {
@@ -38,10 +39,10 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                     "method": "prop",
                     "args": ["value", "{that}.stringBundle.cancel"]
                 },
-                "onReady.onSaveToPreferencesServer": {
+                "onReady.onApplySettings": {
                     "this": "{that}.dom.saveAndApply",
                     "method": "click",
-                    "args": ["{that}.saveToPreferencesServer"]
+                    "args": ["{that}.applySettings"]
                 }
             },
             invokers: {
@@ -53,9 +54,10 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                         ],
                     "dynamic": true
                 },
-                saveToPreferencesServer: {
-                    "funcName": "gpii.saveToPreferencesServer",
-                    "args": ["{that}"]
+                applySettings: {
+                    "funcName": "gpii.applySettings",
+                    "args": ["{that}", "{that}.model.loggedInFlag"],
+                    "dynamic": true
                 }
             },
             selectors: {
@@ -73,7 +75,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
         }
     };
 
-    gpii.saveToPreferencesServer = function (that) {
+    gpii.applySettings = function (that, loggedIn) {
         var common_model_part = "gpii_primarySchema_";
         var size_common = common_model_part.length;
 
@@ -85,13 +87,33 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
             saved_settings[keys_for_post[i]] = [{value: that.model[keys_in_model[i]]}];
         }
 
-        $.ajax({
-            type: "POST",
-            url: "http://preferences.gpii.net/user/", // still not supported
-            data: saved_settings,
-            success: function () {
-                alert("Successfully sent to the Preferences server.");
+        if (!loggedIn) {
+            var port = "8081";
+            var post_url = "http://localhost:" + port;
+
+            var login = $.ajax({
+                            type: "POST",
+                            url: post_url,
+                            data: saved_settings,
+                            success: function () {
+                                alert("Successfully sent to the Flow Manager.");
+                            }
+                        });
+
+            that.applier.requestChange("loggedInFlag", true);
+        }
+        else {
+            var host = "ws://localhost:8081";
+            var socket = new WebSocket(host);
+
+            if(socket.readyState == 1) {
+                socket.send(saved_settings);
+              }
+            else {
+                socket.onopen = function (e) {
+                    socket.send(saved_settings);
+                }
             }
-        });
+        }
     };
 })(jQuery, fluid);
