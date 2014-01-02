@@ -12,7 +12,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
 
 (function ($, fluid) {
     fluid.defaults("gpii.prefsEditor", {
-        gradeNames: ["fluid.prefs.fullNoPreview", "autoInit"],
+        gradeNames: ["gpii.prefs.pmt_pilot_2", "autoInit"],
         prefsEditor: {
             gradeNames: ["fluid.prefs.stringBundle"],
             members: {
@@ -23,26 +23,26 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                     "listener": "{that}.applier.modelChanged.addListener",
                     "args": ["gpii_primarySchema_speakText", "{that}.foldExpandedViewWhenOff"]
                 },
-                "onReady.setSaveAndApplyText": {
-                    "this": "{that}.dom.saveAndApply",
-                    "method": "prop",
-                    "args": ["value", "{that}.stringBundle.saveAndApply"]
-                },
-                "onReady.setResetAndApplyText": {
-                    "this": "{that}.dom.resetAndApply",
-                    "method": "prop",
-                    "args": ["value", "{that}.stringBundle.resetAndApply"]
-                },
-                "onReady.setCancelText": {
-                    "this": "{that}.dom.cancel",
-                    "method": "prop",
-                    "args": ["value", "{that}.stringBundle.cancel"]
-                },
-                "onReady.onSaveToPreferencesServer": {
-                    "this": "{that}.dom.saveAndApply",
-                    "method": "click",
-                    "args": ["{that}.saveToPreferencesServer"]
-                }
+                // "onReady.setSaveAndApplyText": {
+                //     "this": "{that}.dom.saveAndApply",
+                //     "method": "prop",
+                //     "args": ["value", "{that}.stringBundle.saveAndApply"]
+                // },
+                // "onReady.setResetAndApplyText": {
+                //     "this": "{that}.dom.resetAndApply",
+                //     "method": "prop",
+                //     "args": ["value", "{that}.stringBundle.resetAndApply"]
+                // },
+                // "onReady.setCancelText": {
+                //     "this": "{that}.dom.cancel",
+                //     "method": "prop",
+                //     "args": ["value", "{that}.stringBundle.cancel"]
+                // },
+                // "onReady.onSaveToPreferencesServer": {
+                //     "this": "{that}.dom.saveAndApply",
+                //     "method": "click",
+                //     "args": ["{that}.saveToPreferencesServer"]
+                // }
             },
             invokers: {
                 foldExpandedViewWhenOff: {
@@ -53,19 +53,24 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                         ],
                     "dynamic": true
                 },
-                saveToPreferencesServer: {
-                    "funcName": "gpii.saveToPreferencesServer",
-                    "args": ["{that}"]
-                }
+                // saveToPreferencesServer: {
+                //     "funcName": "gpii.saveToPreferencesServer",
+                //     "args": ["{that}"]
+                // }
             },
-            selectors: {
-                saveAndApply: ".flc-prefsEditor-save",
-                resetAndApply: ".flc-prefsEditor-reset",
-                cancel: ".flc-prefsEditor-cancel"
-            },
-            selectorsToIgnore: ["saveAndApply", "resetAndApply", "cancel"]
-        }
+            // selectors: {
+            //     saveAndApply: ".flc-prefsEditor-save",
+            //     resetAndApply: ".flc-prefsEditor-reset",
+            //     cancel: ".flc-prefsEditor-cancel"
+            // },
+            // selectorsToIgnore: ["saveAndApply", "resetAndApply", "cancel"]
+        },
+        finalInitFunction: "bababa"
     });
+
+    bababa = function (that) {
+        hookBash = that;
+    };
 
     gpii.foldExpandedViewWhenOff = function (applier, extraVisible, valueToChange) {
         if (extraVisible) {

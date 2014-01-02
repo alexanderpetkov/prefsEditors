@@ -31,7 +31,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                 saveAndApplyButtonLabel: ".flc-prefsEditor-save",
                 messageLineLabel: ".gpiic-prefsEditor-messageLine",
                 notification: ".gpiic-prefsEditor-notification",
-                confirmButton: ".gpiic-prefsEditor-notificationConfirmButton",
+                // confirmButton: ".gpiic-prefsEditor-notificationConfirmButton",
                 notificationMessagePart1: ".gpiic-prefsEditor-notificationMessagePart1",
                 notificationMessagePart2: ".gpiic-prefsEditor-notificationMessagePart2",
                 notificationMessagePart3: ".gpiic-prefsEditor-notificationMessagePart3",
