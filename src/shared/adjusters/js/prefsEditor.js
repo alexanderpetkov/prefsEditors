@@ -56,7 +56,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                 },
                 applySettings: {
                     "funcName": "gpii.applySettings",
-                    "args": ["{that}", "{that}.model.loggedInFlag"],
+                    "args": ["{that}", "{that}.options.loggedInFlag"],
                     "dynamic": true
                 }
             },
@@ -88,7 +88,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
         }
 
         if (!loggedIn) {
-            var port = "8081";
+            var port = 8081;
             var post_url = "http://localhost:" + port;
 
             var login = $.ajax({
@@ -100,15 +100,15 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                             }
                         });
 
-            that.applier.requestChange("loggedInFlag", true);
+            that.options.loggedInFlag = true;
         }
         else {
             var host = "ws://localhost:8081";
             var socket = new WebSocket(host);
 
-            if(socket.readyState == 1) {
+            if (socket.readyState == 1) {
                 socket.send(saved_settings);
-              }
+            }
             else {
                 socket.onopen = function (e) {
                     socket.send(saved_settings);
