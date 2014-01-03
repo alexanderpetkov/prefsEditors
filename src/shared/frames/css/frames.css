@@ -77,11 +77,15 @@ body {
 .gpii-prefsEditor-preferences {
     background-color: #ced7d9;
     padding: 10px;
+    position: absolute;
+    overflow-y: auto;
+    height: 500px;
+    width: 360px;
 }
 
 .gpii-prefsEditor-save {
     font-family: 'Roboto Slab', serif;
-    background-color: #4C5259;
+    background-color: #BDE2E9;
     border-radius: 5px;
     color: #FFFFFF;
     cursor: pointer;
@@ -92,14 +96,20 @@ body {
     vertical-align: middle;
 }
 
+.gpii-prefsEditor-save:hover {
+    background-color: #249FB7;
+}
+
 .gpii-pmt-saveAndApplyButtonLabel {
     cursor: pointer;
-    position: relative;
     vertical-align: middle;
     z-index: 1;
-    color: #FFFFFF;
+    color: white;
     background-color: transparent !important;
+    position: absolute;
     font-size: 2em !important;
+    margin-left: -47px;
+    margin-top: 12px;
 }
 
 .gpii-pmt-saveAndApplyButtonLabel:before {
@@ -109,6 +119,7 @@ body {
 .gpii-pmt-bottomRow {
     display: table;
     width: 100%;
+    margin-top: 533px;
 }
 
 .gpii-prefsEditor-messageLine {
@@ -127,7 +138,7 @@ body {
     vertical-align: top;
 }
 
-.gpii-prefsEditor-notification {
+/*.gpii-prefsEditor-notification {
     background-color: #333333 !important;
     color: white !important;
     font-size: 1.5em;
@@ -136,17 +147,17 @@ body {
 
 .gpii-prefsEditor-notificationMessage {
     color: #f3f3f3 !important;
-}
+}*/
 
 .ui-dialog {
     padding: 0 !important;
 }
 
 .gpii-dialog-noTitle .ui-dialog-titlebar {
-    display: none;
+    /*display: none;*/
 }
 
-.gpii-prefsEditor-notificationConfirmationArea {
+/*.gpii-prefsEditor-notificationConfirmationArea {
     text-align: right;
 }
 
@@ -161,21 +172,30 @@ body {
     color: white;
     background-color: #666666;
     padding: 0 5px 0 5px;
-}
+}*/
 
-.gpii-prefsEditor-userStatusBar {
+/*.gpii-prefsEditor-userStatusBar {
     text-align: right;
-}
+}*/
 
-.gpii-prefsEditor-userLogoutLink {
+.gpii-prefsEditor-link {
     color: #249fb8;
     font-style: italic;
     font-weight: bold;
-    cursor: pointer; 
+    cursor: pointer;
+}
+
+.gpii-prefsEditor-userLogout {
+    text-align: right;
+    margin-left: 185px;
+}
+
+.gpii-prefsEditor-fullEditor {
+    text-align: left;
 }
 
 .gpii-prefsEditor-reset {
-    display: none;
+    /*display: none;*/
 }
 
 .ui-widget-overlay {
