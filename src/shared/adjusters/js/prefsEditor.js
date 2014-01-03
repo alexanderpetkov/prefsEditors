@@ -91,14 +91,14 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
             var port = 8081;
             var post_url = "http://localhost:" + port;
 
-            var login = $.ajax({
-                            type: "POST",
-                            url: post_url,
-                            data: saved_settings,
-                            success: function () {
-                                alert("Successfully sent to the Flow Manager.");
-                            }
-                        });
+            $.ajax({
+                type: "POST",
+                url: post_url,
+                data: saved_settings,
+                success: function () {
+                    alert("Successfully sent to the Flow Manager.");
+                }
+            });
 
             that.options.loggedInFlag = true;
         }
