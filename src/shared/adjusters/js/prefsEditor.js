@@ -13,6 +13,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
 (function ($, fluid) {
     fluid.defaults("gpii.prefsEditor", {
         gradeNames: ["gpii.prefs.pmt_pilot_2", "autoInit"],
+        loggedInFlag: false,
         prefsEditor: {
             gradeNames: ["fluid.prefs.stringBundle"],
             members: {
@@ -38,11 +39,11 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                 //     "method": "prop",
                 //     "args": ["value", "{that}.stringBundle.cancel"]
                 // },
-                // "onReady.onSaveToPreferencesServer": {
-                //     "this": "{that}.dom.saveAndApply",
-                //     "method": "click",
-                //     "args": ["{that}.saveToPreferencesServer"]
-                // }
+                "onReady.onApplySettings": {
+                    "this": "{that}.dom.saveAndApply",
+                    "method": "click",
+                    "args": ["{that}.applySettings"]
+                }
             },
             invokers: {
                 foldExpandedViewWhenOff: {
@@ -53,24 +54,25 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                         ],
                     "dynamic": true
                 },
-                // saveToPreferencesServer: {
-                //     "funcName": "gpii.saveToPreferencesServer",
-                //     "args": ["{that}"]
-                // }
+                applySettings: {
+                    "funcName": "gpii.applySettings",
+                    "args": ["{that}", "{that}.options.loggedInFlag"],
+                    "dynamic": true
+                }
             },
-            // selectors: {
-            //     saveAndApply: ".flc-prefsEditor-save",
-            //     resetAndApply: ".flc-prefsEditor-reset",
-            //     cancel: ".flc-prefsEditor-cancel"
-            // },
-            // selectorsToIgnore: ["saveAndApply", "resetAndApply", "cancel"]
+            selectors: {
+                saveAndApply: ".flc-prefsEditor-save"
+                // resetAndApply: ".flc-prefsEditor-reset",
+                // cancel: ".flc-prefsEditor-cancel"
+            },
+            selectorsToIgnore: ["saveAndApply"]
         },
-        finalInitFunction: "bababa"
+        // finalInitFunction: "bababa"
     });
 
-    bababa = function (that) {
-        hookBash = that;
-    };
+    // bababa = function (that) {
+    //     hookBash = that;
+    // };
 
     gpii.foldExpandedViewWhenOff = function (applier, extraVisible, valueToChange) {
         if (extraVisible) {
@@ -78,7 +80,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
         }
     };
 
-    gpii.saveToPreferencesServer = function (that) {
+    gpii.applySettings = function (that, loggedIn) {
         var common_model_part = "gpii_primarySchema_";
         var size_common = common_model_part.length;
 
@@ -90,13 +92,48 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
             saved_settings[keys_for_post[i]] = [{value: that.model[keys_in_model[i]]}];
         }
 
-        $.ajax({
-            type: "POST",
-            url: "http://preferences.gpii.net/user/", // still not supported
-            data: saved_settings,
-            success: function () {
-                alert("Successfully sent to the Preferences server.");
+        if (!loggedIn) {
+            var port = 8081;
+            // var post_url = "http://localhost:" + port + "/update";
+            var post_url = "http://localhost:8081/user/screenreader_common/login";
+            $.ajax({
+                type: "GET",
+                url: post_url,
+                data: saved_settings,
+                success: function () {
+                    alert("Successfully sent to the Flow Manager.");
+                }
+            });
+
+            that.options.loggedInFlag = true;
+        }
+        else {
+            var host = "ws://localhost:8081";
+            // var host = "ws://echo.websocket.org/";
+            var socket = new WebSocket(host);
+
+            if (socket.readyState == 1) {
+                alert("nikoga")
+                socket.send(saved_settings);
             }
-        });
+            else {
+                // socket.send(saved_settings);
+                // alert("sled malko onopen")
+                socket.onopen = function (e) {
+                    alert("vliza se v onopen")
+                    socket.send(JSON.stringify(saved_settings));
+                }
+                socket.onmessage = function (evt) {
+                    alert("polucheno e syobshtenie")
+                    alert("RESPONSE:" + JSON.stringify(evt.data));
+                    socket.close();
+                }
+                socket.onclose = function (e) {
+                    alert(JSON.stringify(e));
+                    alert("Disconnected")
+                }
+            }
+        }
     };
+
 })(jQuery, fluid);

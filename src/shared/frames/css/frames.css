@@ -47,20 +47,20 @@ body {
     color: #aeb5b6;
     cursor: default;
 }
-
+/*
 .gpii-prefsEditor-preferenceSetSelectionButtonMyPreferences:before {
     content: "\e617"
 }
 
 .gpii-prefsEditor-preferenceSetSelectionButtonAllPreferences:before {
     content: "\e614"
-}
+}*/
 
-.gpii-prefsEditor-preferenceSetSelectionButtonLabel {
+/*.gpii-prefsEditor-preferenceSetSelectionButtonLabel {
     vertical-align: top;
     cursor: inherit;
     font-family: 'Roboto Slab', serif;
-}
+}*/
 
 .gpii-prefsEditor-preferencesContainer {
     height: calc(100% - 8em);
@@ -80,7 +80,7 @@ body {
     position: absolute;
     overflow-y: auto;
     height: 500px;
-    width: 360px;
+    width: 358px;
 }
 
 .gpii-prefsEditor-save {
@@ -187,18 +187,18 @@ body {
 
 .gpii-prefsEditor-userLogout {
     text-align: right;
-    margin-left: 185px;
+    margin-left: 200px;
 }
 
 .gpii-prefsEditor-fullEditor {
     text-align: left;
 }
 
-.gpii-prefsEditor-reset {
-    /*display: none;*/
-}
+/*.gpii-prefsEditor-reset {
+    /*display: none;
+}*/
 
-.ui-widget-overlay {
+/*.ui-widget-overlay {
     background: url("images/ui-bg_flat_0_aaaaaa_40x100.png") repeat-x scroll 50% 50% #AAAAAA;
     opacity: 0.3;
 }
@@ -209,16 +209,10 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-}
+}*/
 
 .gpii-prefsEditor-adjusterGroup {
     margin-bottom: 2em;
     padding-bottom: 1em;
     background-color: #e5eded;
-}
-
-/* This conflits with speakText-style.css
-Needed for the frame's popup */
-.ui-corner-all {
-    width: 28em !important;
 }
