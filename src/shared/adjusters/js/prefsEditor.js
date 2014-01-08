@@ -24,21 +24,6 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                     "listener": "{that}.applier.modelChanged.addListener",
                     "args": ["gpii_primarySchema_speakText", "{that}.foldExpandedViewWhenOff"]
                 },
-                // "onReady.setSaveAndApplyText": {
-                //     "this": "{that}.dom.saveAndApply",
-                //     "method": "prop",
-                //     "args": ["value", "{that}.stringBundle.saveAndApply"]
-                // },
-                // "onReady.setResetAndApplyText": {
-                //     "this": "{that}.dom.resetAndApply",
-                //     "method": "prop",
-                //     "args": ["value", "{that}.stringBundle.resetAndApply"]
-                // },
-                // "onReady.setCancelText": {
-                //     "this": "{that}.dom.cancel",
-                //     "method": "prop",
-                //     "args": ["value", "{that}.stringBundle.cancel"]
-                // },
                 "onReady.onApplySettings": {
                     "this": "{that}.dom.saveAndApply",
                     "method": "click",
@@ -62,17 +47,10 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
             },
             selectors: {
                 saveAndApply: ".flc-prefsEditor-save"
-                // resetAndApply: ".flc-prefsEditor-reset",
-                // cancel: ".flc-prefsEditor-cancel"
             },
             selectorsToIgnore: ["saveAndApply"]
-        },
-        // finalInitFunction: "bababa"
+        }
     });
-
-    // bababa = function (that) {
-    //     hookBash = that;
-    // };
 
     gpii.foldExpandedViewWhenOff = function (applier, extraVisible, valueToChange) {
         if (extraVisible) {
@@ -93,13 +71,12 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
         }
 
         if (!loggedIn) {
-            var port = 8081;
-            // var post_url = "http://localhost:" + port + "/update";
-            var post_url = "http://localhost:8081/user/screenreader_common/login";
+            var port = 8080;
+            var token = "screenreader_common"; //TODO: should be obtained from PMT. Currently used for testing purpose.
+            var get_url = "http://localhost:" + port + "/user/" + token + "/login";
             $.ajax({
                 type: "GET",
-                url: post_url,
-                data: saved_settings,
+                url: get_url,
                 success: function () {
                     alert("Successfully sent to the Flow Manager.");
                 }
@@ -108,29 +85,15 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
             that.options.loggedInFlag = true;
         }
         else {
-            var host = "ws://localhost:8081";
-            // var host = "ws://echo.websocket.org/";
+            var host = "ws://localhost:8080/update";
             var socket = new WebSocket(host);
 
             if (socket.readyState == 1) {
-                alert("nikoga")
                 socket.send(saved_settings);
             }
             else {
-                // socket.send(saved_settings);
-                // alert("sled malko onopen")
                 socket.onopen = function (e) {
-                    alert("vliza se v onopen")
-                    socket.send(JSON.stringify(saved_settings));
-                }
-                socket.onmessage = function (evt) {
-                    alert("polucheno e syobshtenie")
-                    alert("RESPONSE:" + JSON.stringify(evt.data));
-                    socket.close();
-                }
-                socket.onclose = function (e) {
-                    alert(JSON.stringify(e));
-                    alert("Disconnected")
+                    socket.send(saved_settings);
                 }
             }
         }
