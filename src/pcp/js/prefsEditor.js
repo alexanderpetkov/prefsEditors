@@ -36,10 +36,7 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                 }
             },
             events: {
-                onLogin: null,
                 onLogout: null,
-                onRequestPageTransition: null,
-                onSettingChanged: null,
                 onAdjusterChange: null
             },
             model: {
@@ -49,27 +46,10 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                 "onAdjusterChange.update": {
                     "listener": "{socket}.applySettings"
                 },
-                "onReady.fullEditorLink": {
+                "onReady.setFullEditorLink": {
                     "this": "{that}.dom.fullEditorLink",
-                    "method": "click",
-                    "args": ["{that}.events.onRequestPageTransition.fire"]
-                },
-                "onRequestPageTransition.save": "{that}.saveSettings",
-                "onRequestPageTransition.goToPMT": {
-                    "funcName": "fluid.set",
-                    "args": [window, "location.href", "{prefsEditorLoader}.options.pmtUrl"]
-                },
-                "onLogin.setUserLoggedIn": {
-                    listener: "{that}.applier.requestChange",
-                    args: ["userLoggedIn", true]
-                },
-                "onLogin.showSaveMessage": {
-                    "this": "{that}.dom.messageLineLabel",
-                    "method": "text",
-                    "args": ["{that}.msgLookup.preferencesModified"]
-                },
-                "onLogin.showUserStatusBar": {
-                    "listener": "{that}.showUserStatusBar"
+                    "method": "attr",
+                    "args": ["href", "{prefsEditorLoader}.options.pmtUrl"]
                 },
                 "onReset.triggerLogoutEvent": {
                     "listener": "{that}.events.onLogout.fire"
@@ -78,28 +58,13 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                     listener: "{that}.applier.requestChange",
                     args: ["userLoggedIn", false]
                 },
-                "onLogout.clearMessage": {
-                    "this": "{that}.dom.messageLineLabel",
-                    "method": "text",
-                    "args": [""]
-                },
                 "onLogout.gpiiLogout": {
                     listener: "{gpiiSession}.logout"
-                },
-                "onReady.fullEditorLinkPreventDefault": {
-                    "this": "{that}.dom.fullEditorLink",
-                    "method": "click",
-                    "args": ["{that}.preventDefaultLinkEvent"]
                 },
                 "onReady.logoutLinkPreventDefault": {
                     "this": "{that}.dom.logoutLink",
                     "method": "click",
                     "args": ["{that}.preventDefaultLinkEvent"]
-                },
-                "onReady.setFullEditorLinkText": {
-                    "this": "{that}.dom.fullEditorLink",
-                    "method": "text",
-                    "args": ["{that}.msgLookup.fullEditorText"]
                 },
                 "onReady.setLogoutLinkText": {
                     "this": "{that}.dom.logoutLink",
@@ -111,6 +76,11 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                     "method": "click",
                     "args": ["{that}.events.onLogout.fire"]
                 },
+                "onReady.setFullEditorLinkText": {
+                    "this": "{that}.dom.fullEditorLink",
+                    "method": "text",
+                    "args": ["{that}.msgLookup.fullEditorText"]
+                },
                 "onReady.bindModelChangedListener": {
                     // used instead of the declarative syntax so that
                     // model won't "count" as updated when fetching from
@@ -120,28 +90,14 @@ https://github.com/GPII/prefsEditors/LICENSE.txt
                 }
             },
             invokers: {
-                showUserStatusBar: {
-                    "this": "{that}.dom.userStatusBar",
-                    "method": "slideDown"
-                },
-                saveSettings: {
-                    "func": "{gpiiStore}.set",
-                    "args": "{that}.model",
-                    "dynamic": true
-                },
                 preventDefaultLinkEvent: {
                     "funcName": "gpii.eventUtility.preventDefaultEvent"
                 }
             },
             selectors: {
-                messageLineLabel: ".gpiic-prefsEditor-messageLine",
                 fullEditorLink: ".gpiic-prefsEditor-fullEditorLink",
                 logoutLink: ".gpiic-prefsEditor-userLogoutLink"
             }
         }
     });
-
-    gpii.prefsEditor.triggerEvent = function (that, targetSelector, event) {
-        that.locate(targetSelector).trigger(event);
-    };
 })(jQuery, fluid);
