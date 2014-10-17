@@ -26,7 +26,7 @@ https://github.com/gpii/universal/LICENSE.txt
     var userToWorkWith = "sammy";
     var userToBeCreated = "userThatHasJustBeenCreated";
 
-    exampleModel = {
+    var exampleModel = {
         "gpii_primarySchema_volume": 80,
         "gpii_primarySchema_keyEcho": false,
         "gpii_primarySchema_wordEcho": false,
@@ -51,7 +51,7 @@ https://github.com/gpii/universal/LICENSE.txt
         "gpii_primarySchema_screenReaderBrailleOutput": false
     };
 
-    convertedExampleModel = {
+    var convertedExampleModel = {
         "http://registry.gpii.net/common/pitch": 0.8,
         "http://registry.gpii.net/common/volume": 0.8,
         "http://registry.gpii.net/common/keyEcho": false,
@@ -79,39 +79,38 @@ https://github.com/gpii/universal/LICENSE.txt
     /*
      * Mock settings used in the various test scenarios.
      */
-    var loginSuccessMockSettings =
-    {
+    var loginSuccessMockSettings = {
         url: store.gpiiSession.options.url + "user/" + userToWorkWith + "/login",
         responseText: "User with token " + userToWorkWith + " was successfully logged in."
     };
 
-    var loginSuccessNewUserMockSettings =
-    {
+    var loginSuccessNewUserMockSettings = {
         url: store.gpiiSession.options.url + "user/" + userToBeCreated + "/login",
         responseText: "User with token " + userToBeCreated + " was successfully logged in."
     };
 
-    var getRequestMockSettings =
-    {
-        url: store.gpiiSession.options.url + "user/" + userToWorkWith,
+    var getRequestMockSettings = {
+        url: store.gpiiSession.options.url + "preferences/" + userToWorkWith,
         dataType: "json",
         responseText: {
-            "preferences": convertedExampleModel
+            "contexts": {
+                "gpii-default": {
+                    "preferences": convertedExampleModel
+                }
+            }
         }
     };
 
-    var setRequestNoUserMockSettings =
-    {
-        url: store.gpiiSession.options.url + "user/",
+    var setRequestNoUserMockSettings = {
+        url: store.gpiiSession.options.url + "preferences/",
         dataType: "json",
         responseText: {
             "token": userToBeCreated
         }
     };
 
-    var setRequestUserLoggedMockSettings =
-    {
-        url: store.gpiiSession.options.url + "user/" + userToWorkWith,
+    var setRequestUserLoggedMockSettings = {
+        url: store.gpiiSession.options.url + "preferences/" + userToWorkWith,
         dataType: "json",
         responseText: {
             "token": userToWorkWith
@@ -161,7 +160,6 @@ https://github.com/gpii/universal/LICENSE.txt
 
         jqUnit.assertValue("Set creates token.", store.gpiiSession.options.loggedUser);
     };
-
 
     gpii.prefs.gpiiStore.tests.assertSetInvokerUserLogged = function () {
         store.gpiiSession.login(userToWorkWith);
