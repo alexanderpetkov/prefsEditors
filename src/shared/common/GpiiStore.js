@@ -190,10 +190,19 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
             }
         };
 
-        var urlToPost = session.options.loggedUser ? (settings.url + "preferences/" + session.options.loggedUser) : (settings.url + "preferences/");
+        var urlToPost, requestType;
+
+        if (session.options.loggedUser) {
+            urlToPost = settings.url + "preferences/" + session.options.loggedUser;
+            requestType = "PUT";
+        } else {
+            urlToPost = settings.url + "preferences/";
+            requestType = "POST";
+        };
+
         $.ajax({
             url: urlToPost,
-            type: "POST",
+            type: requestType,
             dataType: "json",
             async: false,
             contentType: "application/json",
